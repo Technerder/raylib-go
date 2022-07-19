@@ -3,6 +3,7 @@ package rl
 /*
 #include "raylib.h"
 #include "rlgl.h"
+#include "raymath.h"
 #include <stdlib.h>
 */
 import "C"
@@ -10,6 +11,85 @@ import (
 	"reflect"
 	"unsafe"
 )
+
+var (
+	RL_MODELVIEW = int32(0x1700)
+	RL_PROJECTION = int32(0x1701)
+	RL_CULL_DISTANCE_NEAR = 0.01
+)
+
+func DrawRenderBatchActive() {
+	C.rlDrawRenderBatchActive()
+}
+
+func MatrixMode(mode int32) {
+	cflag := (C.int)(mode)
+	C.rlMatrixMode(cflag)
+}
+
+func PushMatrix() {
+	C.rlPushMatrix()
+}
+
+func LoadIdentity() {
+	C.rlLoadIdentity()
+}
+
+func EnableDepthTest() {
+	C.rlEnableDepthTest()
+}
+
+func Frustum(left float32, right float32, bottom float32, top float32, znear float32, zfar float32) {
+	Left := (C.double)(left)
+	Right := (C.double)(left)
+	Bottom := (C.double)(left)
+	Top := (C.double)(left)
+	ZNear := (C.double)(left)
+	ZFar := (C.double)(left)
+	C.rlFrustum(Left, Right, Bottom, Top, ZNear, ZFar)
+}
+
+func Ortho(left float32, right float32, bottom float32, top float32, znear float32, zfar float32) {
+	Left := (C.double)(left)
+	Right := (C.double)(left)
+	Bottom := (C.double)(left)
+	Top := (C.double)(left)
+	ZNear := (C.double)(left)
+	ZFar := (C.double)(left)
+	C.rlOrtho(Left, Right, Bottom, Top, ZNear, ZFar)
+}
+
+func MultMatrixf(matf []float32) {
+	ccount := (*C.float)(&matf[0])
+	C.rlMultMatrixf(ccount)
+}
+
+type float16 struct {
+	V []float32
+}
+
+func MatrixToFloatV(mat Matrix) float16 {
+	result := float16{
+		V: make([]float32, 16),
+	}
+	result.V[0] = mat.M0;
+	result.V[1] = mat.M1;
+	result.V[2] = mat.M2;
+	result.V[3] = mat.M3;
+	result.V[4] = mat.M4;
+	result.V[5] = mat.M5;
+	result.V[6] = mat.M6;
+	result.V[7] = mat.M7;
+	result.V[8] = mat.M8;
+	result.V[9] = mat.M9;
+	result.V[10] = mat.M10;
+	result.V[11] = mat.M11;
+	result.V[12] = mat.M12;
+	result.V[13] = mat.M13;
+	result.V[14] = mat.M14;
+	result.V[15] = mat.M15;
+	return result
+}
 
 // cptr returns C pointer
 func (s *Shader) cptr() *C.Shader {
