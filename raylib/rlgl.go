@@ -12,33 +12,40 @@ import (
 	"unsafe"
 )
 
+// RLGL Constants
 var (
-	RL_MODELVIEW = int32(0x1700)
-	RL_PROJECTION = int32(0x1701)
+	RL_MODELVIEW          = int32(0x1700)
+	RL_PROJECTION         = int32(0x1701)
 	RL_CULL_DISTANCE_NEAR = 0.01
 )
 
+// DrawRenderBatchActive calls rlgl#rlDrawRenderBatchActive
 func DrawRenderBatchActive() {
 	C.rlDrawRenderBatchActive()
 }
 
+// MatrixMode calls rlgl#rlMatrixMode
 func MatrixMode(mode int32) {
 	cflag := (C.int)(mode)
 	C.rlMatrixMode(cflag)
 }
 
+// PushMatrix calls rlgl#rlPushMatrix
 func PushMatrix() {
 	C.rlPushMatrix()
 }
 
+// LoadIdentity calls rlgl#rlLoadIdentity
 func LoadIdentity() {
 	C.rlLoadIdentity()
 }
 
+// EnableDepthTest calls rlgl#rlEnableDepthTest
 func EnableDepthTest() {
 	C.rlEnableDepthTest()
 }
 
+// Frustum calls rlgl#rlFrustum
 func Frustum(left float32, right float32, bottom float32, top float32, znear float32, zfar float32) {
 	Left := (C.double)(left)
 	Right := (C.double)(right)
@@ -49,6 +56,7 @@ func Frustum(left float32, right float32, bottom float32, top float32, znear flo
 	C.rlFrustum(Left, Right, Bottom, Top, ZNear, ZFar)
 }
 
+// Ortho calls rlgl#rlOrtho
 func Ortho(left float32, right float32, bottom float32, top float32, znear float32, zfar float32) {
 	Left := (C.double)(left)
 	Right := (C.double)(right)
@@ -59,35 +67,37 @@ func Ortho(left float32, right float32, bottom float32, top float32, znear float
 	C.rlOrtho(Left, Right, Bottom, Top, ZNear, ZFar)
 }
 
+// MultMatrixf calls rlgl#rlMultMatrixf
 func MultMatrixf(matf []float32) {
 	ccount := (*C.float)(unsafe.Pointer(&matf[0]))
 	C.rlMultMatrixf(ccount)
 }
 
-type float16 struct {
+type Float16 struct {
 	V []float32
 }
 
-func MatrixToFloatV(mat Matrix) float16 {
-	result := float16{
+// MatrixToFloatV returns Float16 object
+func MatrixToFloatV(mat Matrix) Float16 {
+	result := Float16{
 		V: make([]float32, 16),
 	}
-	result.V[0] = mat.M0;
-	result.V[1] = mat.M1;
-	result.V[2] = mat.M2;
-	result.V[3] = mat.M3;
-	result.V[4] = mat.M4;
-	result.V[5] = mat.M5;
-	result.V[6] = mat.M6;
-	result.V[7] = mat.M7;
-	result.V[8] = mat.M8;
-	result.V[9] = mat.M9;
-	result.V[10] = mat.M10;
-	result.V[11] = mat.M11;
-	result.V[12] = mat.M12;
-	result.V[13] = mat.M13;
-	result.V[14] = mat.M14;
-	result.V[15] = mat.M15;
+	result.V[0] = mat.M0
+	result.V[1] = mat.M1
+	result.V[2] = mat.M2
+	result.V[3] = mat.M3
+	result.V[4] = mat.M4
+	result.V[5] = mat.M5
+	result.V[6] = mat.M6
+	result.V[7] = mat.M7
+	result.V[8] = mat.M8
+	result.V[9] = mat.M9
+	result.V[10] = mat.M10
+	result.V[11] = mat.M11
+	result.V[12] = mat.M12
+	result.V[13] = mat.M13
+	result.V[14] = mat.M14
+	result.V[15] = mat.M15
 	return result
 }
 
