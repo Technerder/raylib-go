@@ -41,26 +41,26 @@ func EnableDepthTest() {
 
 func Frustum(left float32, right float32, bottom float32, top float32, znear float32, zfar float32) {
 	Left := (C.double)(left)
-	Right := (C.double)(left)
-	Bottom := (C.double)(left)
-	Top := (C.double)(left)
-	ZNear := (C.double)(left)
-	ZFar := (C.double)(left)
+	Right := (C.double)(right)
+	Bottom := (C.double)(bottom)
+	Top := (C.double)(top)
+	ZNear := (C.double)(znear)
+	ZFar := (C.double)(zfar)
 	C.rlFrustum(Left, Right, Bottom, Top, ZNear, ZFar)
 }
 
 func Ortho(left float32, right float32, bottom float32, top float32, znear float32, zfar float32) {
 	Left := (C.double)(left)
-	Right := (C.double)(left)
-	Bottom := (C.double)(left)
-	Top := (C.double)(left)
-	ZNear := (C.double)(left)
-	ZFar := (C.double)(left)
+	Right := (C.double)(right)
+	Bottom := (C.double)(bottom)
+	Top := (C.double)(top)
+	ZNear := (C.double)(znear)
+	ZFar := (C.double)(zfar)
 	C.rlOrtho(Left, Right, Bottom, Top, ZNear, ZFar)
 }
 
 func MultMatrixf(matf []float32) {
-	ccount := (*C.float)(&matf[0])
+	ccount := (*C.float)(unsafe.Pointer(&matf[0]))
 	C.rlMultMatrixf(ccount)
 }
 
